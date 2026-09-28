@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nailstudio.by.naina - Scratch & Win</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #fde2e4 0%, #eae4f8 50%, #f7d6e0 100%);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --accent-pink: #ff85a1;
+            --accent-lilac: #b5838d;
+            --text-color: #4a4e69;
+            --gold-accent: #d4af37;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        /* Sparkle Animation */
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .sparkle-bg {
+            position: absolute;
+            font-size: 1.2rem;
+            animation: sparkle 2.5s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        .card-container {
+            width: 100%;
+            max-width: 380px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 30px 24px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(181, 131, 141, 0.2), 
+                        0 0 0 2px rgba(255, 255, 255, 0.8) inset;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #5c3d46;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .subtitle {
+            font-size: 0.88rem;
+            color: #7d6b7d;
+            margin-bottom: 22px;
+            font-weight: 500;
+        }
+
+        /* Scratch Box Area */
+        .scratch-box {
+            position: relative;
+            width: 280px;
+            height: 160px;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border: 3px solid #ffffff;
+        }
+
+        .prize-underlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff0f5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            border-radius: 17px;
+            background-image: radial-gradient(#ffd6e0 1px, transparent 1px);
+            background-size: 12px 12px;
+        }
+
+        .prize-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #d63384;
+            line-height: 1.3;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .prize-subtext {
+            font-size: 0.75rem;
+            color: #8c6d7a;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            touch-action: none;
+            border-radius: 17px;
+        }
+
+        /* Footer Details */
+        .footer-terms {
+            font-size: 0.75rem;
+            color: #8a7a8a;
+            margin-bottom: 12px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .instagram-tag {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #b5838d;
+            text-decoration: none;
+            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            border: 1px solid rgba(181, 131, 141, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .instagram-tag:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Confetti Effect */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #ff85a1;
+            position: absolute;
+            top: -10px;
+            border-radius: 3px;
+            animation: fall 3s linear infinite;
+            z-index: 99;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Background Decor -->
+    <div class="sparkle-bg" style="top: 10%; left: 8%;">✨</div>
+    <div class="sparkle-bg" style="top: 20%; right: 10%; animation-delay: 1s;">💖</div>
+    <div class="sparkle-bg" style="bottom: 15%; left: 12%; animation-delay: 1.5s;">🌸</div>
+    <div class="sparkle-bg" style="bottom: 25%; right: 8%; animation-delay: 0.5s;">✨</div>
+
+    <div class="card-container">
+        <div class="header-title">💅🏻 SCRATCH & WIN 🎀</div>
+        <div class="subtitle">Scratch your card to reveal your surprise!</div>
+
+        <!-- Interactive Scratch Area -->
+        <div class="scratch-box">
+            <div class="prize-underlay">
+                <div class="prize-text" id="prizeText">...</div>
+                <div class="prize-subtext">Take a screenshot to redeem! 📸</div>
+            </div>
+            <canvas id="scratchCanvas" width="280" height="160"></canvas>
+        </div>
+
+        <div class="footer-terms">Valid for 30 days • One-time use only</div>
+        <a href="https://instagram.com/nailstudio.by.naina" target="_blank" class="instagram-tag">
+            ✨ @nailstudio.by.naina
+        </a>
+    </div>
+
+    <script>
+        // --- 1. PRIZE GENERATION SYSTEM ---
+        // Exactly 1 winning ticket ("FREE PRESS-ON NAIL SET") and 99 standard tickets ("₹50 OFF")
+        function getOrSetPrize() {
+            let userPrize = localStorage.getItem('nailstudio_prize');
+            
+            if (!userPrize) {
+                // Check if the grand prize has already been claimed globally on this device
+                const grandPrizeClaimed = localStorage.getItem('nailstudio_grand_prize_claimed');
+                
+                // 1% chance for the Grand Prize if not claimed yet
+                const isGrandWinner = !grandPrizeClaimed && Math.random() < 0.01;
+                
+                if (isGrandWinner) {
+                    userPrize = "🎁 FREE PRESS-ON NAIL SET";
+                    localStorage.setItem('nailstudio_grand_prize_claimed', 'true');
+                } else {
+                    userPrize = "💗 ₹50 OFF on your next nail appointment";
+                }
+                
+                localStorage.setItem('nailstudio_prize', userPrize);
+            }
+            return userPrize;
+        }
+
+        const prize = getOrSetPrize();
+        document.getElementById('prizeText').innerText = prize;
+
+        // --- 2. CANVAS SCRATCH-OFF LOGIC ---
+        const canvas = document.getElementById('scratchCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let scratchedPercentage = 0;
+        let revealed = false;
+
+        // Draw Silver Texture Overlay
+        function initCanvas() {
+            // Base Silver Gradient
+            const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            grad.addColorStop(0, '#e0e0e0');
+            grad.addColorStop(0.25, '#ffffff');
+            grad.addColorStop(0.5, '#d6d6d6');
+            grad.addColorStop(0.75, '#f5f5f5');
+            grad.addColorStop(1, '#cccccc');
+            
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Add Decorative Pattern & Sparkles over silver surface
+            ctx.fillStyle = '#b3b3b3';
+            ctx.font = 'bold 16px Poppins';
+            ctx.textAlign = 'center';
+            ctx.fillText('✨ SCRATCH HERE ✨', canvas.width / 2, canvas.height / 2 + 6);
+            
+            // Subtle silver border inner accent
+            ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(6, 6, canvas.width - 12, canvas.height - 12);
+        }
+
+        initCanvas();
+
+        function getBrushPos(xRef, yRef) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: xRef - rect.left,
+                y: yRef - rect.top
+            };
+        }
+
+        function scratch(x, y) {
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 18, 0, Math.PI * 2, false);
+            ctx.fill();
+            checkScratchProgress();
+        }
+
+        // Mouse Events
+        canvas.addEventListener('mousedown', (e) => { isDrawing = true; const pos = getBrushPos(e.clientX, e.clientY); scratch(pos.x, pos.y); });
+        canvas.addEventListener('mousemove', (e) => { if (isDrawing) { const pos = getBrushPos(e.clientX, e.clientY); scratch(pos.x, pos.y); } });
+        canvas.addEventListener('mouseup', () => { isDrawing = false; });
+
+        // Touch Events for Mobile
+        canvas.addEventListener('touchstart', (e) => {
+            isDrawing = true;
+            const touch = e.touches[0];
+            const pos = getBrushPos(touch.clientX, touch.clientY);
+            scratch(pos.x, pos.y);
+        }, { passive: true });
+
+        canvas.addEventListener('touchmove', (e) => {
+            if (isDrawing) {
+                const touch = e.touches[0];
+                const pos = getBrushPos(touch.clientX, touch.clientY);
+                scratch(pos.x, pos.y);
+            }
+        }, { passive: true });
+
+        canvas.addEventListener('touchend', () => { isDrawing = false; });
+
+        // Auto-clear when >45% scratched
+        function checkScratchProgress() {
+            if (revealed) return;
+            
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const pixels = imageData.data;
+            let transparentPixels = 0;
+
+            for (let i = 3; i < pixels.length; i += 4) {
+                if (pixels[i] === 0) transparentPixels++;
+            }
+
+            scratchedPercentage = (transparentPixels / (pixels.length / 4)) * 100;
+
+            if (scratchedPercentage > 45) {
+                revealed = true;
+                canvas.style.transition = 'opacity 0.6s ease';
+                canvas.style.opacity = '0';
+                setTimeout(() => {
+                    canvas.style.display = 'none';
+                    triggerConfetti();
+                }, 600);
+            }
+        }
+
+        // --- 3. CELEBRATION CONFETTI ---
+        function triggerConfetti() {
+            const colors = ['#ff85a1', '#b5838d', '#f7d6e0', '#ffffff', '#ffd700'];
+            for (let i = 0; i < 40; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                confetti.style.width = (Math.random() * 8 + 6) + 'px';
+                confetti.style.height = confetti.style.width;
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 3500);
+            }
+        }
+    </script>
+</body>
+</html>
